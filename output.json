@@ -1,0 +1,20 @@
+[
+    {
+        "text": "This is a misleading claim about health.",
+        "classification": "Misleading",
+        "fact_check": {
+            "status": "false",
+            "source": "FactCheck API",
+            "details": "This claim has been debunked by reputable sources."
+        }
+    },
+    {
+        "text": "This is an accurate statement based on scientific research.",
+        "classification": "Accurate",
+        "fact_check": {
+            "status": "true",
+            "source": "FactCheck API",
+            "details": "This claim is supported by scientific evidence."
+        }
+    }
+]
