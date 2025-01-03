@@ -3,6 +3,7 @@ from Extraction import extract_twitter_data, extract_instagram_data, save_data_a
 from preprocessing import process_json
 from classification import load_model_and_vectorizer, classify_bulk_text, save_classification_results
 from factchecking import fact_check_with_api
+from email_alert import send_email
 
 def main():
     twitter_query = "health OR medicine OR treatment OR disease OR symptom"
@@ -45,6 +46,14 @@ def main():
         claim = entry['text']
         fact_check_result = fact_check_with_api(claim)
         preprocessed_data[i]['fact_check'] = fact_check_result
+
+    for entry in preprocessed_data:
+        if entry['classification'] == "Misleading" and "health" in entry['text'].lower():
+            flagged_content = entry['text']
+            reason_for_flagging = "Misleading health-related claim"
+            email_subject = "Flagged Health Misinformation"
+            email_body = f"The following content has been flagged as misleading:\n\n{flagged_content}\n\nReason for flagging: {reason_for_flagging}\n\nPlease provide a public response."
+            send_email("authority_email@example.com", email_subject, email_body)
 
     classification_output_path = "classified_and_fact_checked_medical_data.json"
     save_classification_results(preprocessed_data, classification_output_path)
